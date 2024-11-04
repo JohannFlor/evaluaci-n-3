@@ -5,7 +5,7 @@ const Director = require('../models/Director');
 const Actor = require('../models/Actor');
 
 const getAll = catchError(async(req, res) => {
-    const results = await Movie.findAll({include:[Genre,Director,Actor]});
+    const results = await Movie.findAll({include: [Genre, Director, Actor]});
     return res.json(results);
 });
 
@@ -16,7 +16,7 @@ const create = catchError(async(req, res) => {
 
 const getOne = catchError(async(req, res) => {
     const { id } = req.params;
-    const result = await Movie.findByPk(id,{include:[Genre,Director,Actor]});
+    const result = await Movie.findByPk(id, {include: [Genre, Director, Actor]});
     if(!result) return res.sendStatus(404);
     return res.json(result);
 });
@@ -38,50 +38,32 @@ const update = catchError(async(req, res) => {
     return res.json(result[1][0]);
 });
 
-const setGenres = catchError(async(req,res)=>{
-   const {id} = req.params
-   const movie = await Movie.findByPk(id)
+// movies/:id/genres
+const setGenres = catchError(async(req,res) => {
+    const { id } = req.params;
+    const movies = await Movie.findByPk(id);
+    await movies.setGenres(req.body);
+    const genres = await movies.getGenres();
+    return res.json(genres);
+});
 
-   if(!movie) return res.sendStatus(404)
+// movies:id/directors
+const setDirectors = catchError(async(req,res) => {
+    const { id } = req.params;
+    const movies = await Movie.findByPk(id);
+    await movies.setDirectors(req.body);
+    const directors = await movies.getDirectors();
+    return res.json(directors);
+});
 
-   await movie.setGenres(req.body)
-
-
-   const genres = await movie.getGenres()
-
-
-   return res.json(genres)
-})
-
-const setDirectors = catchError(async (req,res)=>{
-    const {id} = req.params
-    const movie = await Movie.findByPk(id)
- 
-    if(!movie) return res.sendStatus(404)
- 
-    await movie.setDirectors(req.body)
- 
- 
-    const directors = await movie.getDirectors()
- 
- 
-    return res.json(directors)
-})
-
-const setActors = catchError(async(req,res)=>{
-    const {id} = req.params
-    const movie = await Movie.findByPk(id)
- 
-    if(!movie) return res.sendStatus(404)
- 
-    await movie.setActors(req.body)
- 
- 
-    const actors = await movie.getActors()
- 
- 
-    return res.json(actors)
-})
+// movies/:id/actors
+const setActors = catchError(async(req,res) => {
+    const { id } = req.params;
+    const movies = await Movie.findByPk(id);
+    await movies.setActors(req.body);
+    const actors = await movies.getActors();
+    return res.json(actors);
+});
 
 module.exports = {
     getAll,
@@ -91,5 +73,5 @@ module.exports = {
     update,
     setGenres,
     setDirectors,
-    setActors
+    setActors,
 }

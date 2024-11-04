@@ -3,19 +3,14 @@ const Director = require("./Director");
 const Genre = require("./Genre");
 const Movie = require("./Movie");
 
+    //! /movies/:id/artists
+Movie.belongsToMany(Actor, {through: "movies_actors"});
+Actor.belongsToMany(Movie, {through: "movies_actors"});
 
-//tabla pivote de Movies y Directors
+    //! /movies/:id/directors
+Movie.belongsToMany(Director, {through: "movies_directors"});
+Director.belongsToMany(Movie, {through: "movies_directors"});
 
-Actor.belongsToMany(Movie,{through:'actorMovie'})
-Movie.belongsToMany(Actor,{through:'actorMovie'})
-
-// tabla pivote de Movie y Genre
-
-Genre.belongsToMany(Movie,{through:'genreMovie'})
-Movie.belongsToMany(Genre,{through:'genreMovie'})
-
-//tabla pivote de Movie y Actors
-
-Director.belongsToMany(Movie,{through:'directorMovie'})
-Movie.belongsToMany(Director,{through:'directorMovie'})
-
+    //! /movies/:id/genres
+Movie.belongsToMany(Genre, {through: "movies_genres"});
+Genre.belongsToMany(Movie, {through: "movies_genres"});

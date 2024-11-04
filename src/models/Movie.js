@@ -11,13 +11,13 @@ const Movie = sequelize.define('movie', {
         allowNull: false
     },
     synopsis: {
-        type: DataTypes.STRING,
+        type: DataTypes.TEXT,
         allowNull: false
     },
     releaseYear: {
-        type: DataTypes.INTEGER,
+        type: DataTypes.DATEONLY,
         allowNull: false
-    }
+    },
 });
 
 module.exports = Movie;
